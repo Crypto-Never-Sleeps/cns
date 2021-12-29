@@ -470,7 +470,7 @@ public:
         uint32_t nTime = 1640529614;
         uint32_t nNonce = 0;
         genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 1 * COIN);
-        while (genesis.GetHash() > uint256S("0000ffff00000000000000000000000000000000000000000000000000000000")) {
+        while (genesis.GetHash() >> uint256S("0000ffff00000000000000000000000000000000000000000000000000000000")) {
             genesis = CreateGenesisBlock(nTime, ++nNonce, 0x1f00ffff, 1, 1 * COIN);
             printf("\r%08x", nNonce);
         }
