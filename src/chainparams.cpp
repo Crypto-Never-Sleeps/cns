@@ -612,11 +612,16 @@ public:
         pchMessageStart[3] = 0x6d; //m
         nDefaultPort = 10227;
         nPruneAfterHeight = 1000;
-        //FindMainNetGenesisBlock(1640529614, 0x20001fff, "test");
-        genesis = CreateGenesisBlock(1640529614, 2417230, 0x1e0ffff0, 1, 1 * COIN);
+	//FindMainNetGenesisBlock(1640529614, 0x20001fff, "test");
+
+        uint32_t nTime = 1640529614;
+        uint32_t nNonce = 0;
+        genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 1 * COIN);
+        while (genesis.GetHash() != uint256S("0000ffff00000000000000000000000000000000000000000000000000000000")) {
+            genesis = CreateGenesisBlock(nTime, ++nNonce, 0x1f00ffff, 1, 1 * COIN);
+            printf("\r%08x", nNonce);
+        }
         consensus.hashGenesisBlock = genesis.GetHash();
-        //assert(consensus.hashGenesisBlock == uint256S("0x000000b2d79bb49cd36d8f01937be42379ddf9b599866604b6145f5db59bece7"));
-        //assert(genesis.hashMerkleRoot == uint256S("0x0e9e7f841f5ff154d1edb333df00912259e7709102a3041fdbf1bbc21c6d3331"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
