@@ -79,8 +79,8 @@ static CBlock CreateDevNetGenesisBlock(const uint256 &prevBlockHash, const std::
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "NFTs the 'Gateway Drug to Crypto', More Countries May Adopt Bitcoin in 2022";
-    const CScript genesisOutputScript = CScript() << ParseHex("040184710fa689ad5023690c80f3a49c8f13f8d45b8c857fbcbc8bc4a8e4d3eb4b10f4d4604fa08dce601aaf0f470216fe1b51850b4acf21b179c45070ac7b03a9") << OP_CHECKSIG;
+    const char* pszTimestamp = "Crypto Never Sleeps";
+    const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
@@ -465,20 +465,26 @@ public:
         pchMessageStart[3] = 0x2e;//.
         nDefaultPort = 10226;
         nPruneAfterHeight = 100000;
-        //FindMainNetGenesisBlock(1640313584, 0x20001fff, "main");
-        genesis = CreateGenesisBlock(1640313584, 1253, 0x20001fff, 1, 1 * COIN);
-        consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x71b99e0fc16efc5ea30aff0715e0014b3189e190217f43cff49f36897c7aad11"));
-        assert(genesis.hashMerkleRoot == uint256S("0x1e1a5866be75552f6a1b2ed4c5dab9133df397034f3c2e231d24caff6cdc11a7"));
+        //FindMainNetGenesisBlock(1640529614, 0x20001fff, "main");
 
-        vSeeds.emplace_back("seed01.cryptoneversleeps.org", true);
-        vSeeds.emplace_back("seed01.cryptoneversleeps.org", true);
-        vSeeds.emplace_back("seed02.cryptoneversleeps.org", true);
-        vSeeds.emplace_back("seed03.cryptoneversleeps.org", true);
-        vSeeds.emplace_back("seed04.cryptoneversleeps.org", true);
-        vSeeds.emplace_back("seed05.cryptoneversleeps.org", true);
-        vSeeds.emplace_back("seed06.cryptoneversleeps.org", true);
-        vSeeds.emplace_back("seed07.cryptoneversleeps.org", true);
+        uint32_t nTime = 1640529614;
+        uint32_t nNonce = 0;
+        genesis = CreateGenesisBlock(nTime, nNonce, 0x1f00ffff, 1, 1 * COIN);
+        while (genesis.GetHash() != uint256S("0000ffff00000000000000000000000000000000000000000000000000000000")) {
+            genesis = CreateGenesisBlock(nTime, ++nNonce, 0x1f00ffff, 1, 1 * COIN);
+            printf("\r%08x", nNonce);
+        }
+        consensus.hashGenesisBlock = genesis.GetHash();
+
+        vSeeds.emplace_back("seed00.cns.com", true);
+        vSeeds.emplace_back("seed01.cns.com", true);
+        vSeeds.emplace_back("seed02.cns.com", true);
+        vSeeds.emplace_back("seed03.cns.com", true);
+        vSeeds.emplace_back("seed04.cns.com", true);
+        vSeeds.emplace_back("seed05.cns.com", true);
+        vSeeds.emplace_back("seed06.cns.com", true);
+        vSeeds.emplace_back("ger1.cns.com", true);
+        vSeeds.emplace_back("ny1.cns.com", true);
 
 
         // CNS addresses start with 'r'
@@ -606,11 +612,11 @@ public:
         pchMessageStart[3] = 0x6d; //m
         nDefaultPort = 10227;
         nPruneAfterHeight = 1000;
-        //FindMainNetGenesisBlock(1618814931,  0x20001fff, "test");
-        genesis = CreateGenesisBlock(1618814931, 1398, 0x20001fff, 4, 5000 * COIN);
+        //FindMainNetGenesisBlock(1640529614, 0x20001fff, "test");
+        genesis = CreateGenesisBlock(1640529614, 2417230, 0x1e0ffff0, 1, 1 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x3c8321a56c52304c462f03f92f9e36677b57126501d77482feb763dcb59da91b"));
-        assert(genesis.hashMerkleRoot == uint256S("0x87a48bc22468acdd72ee540aab7c086a5bbcddc12b51c6ac925717a74c269453"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000000b2d79bb49cd36d8f01937be42379ddf9b599866604b6145f5db59bece7"));
+        assert(genesis.hashMerkleRoot == uint256S("0x0e9e7f841f5ff154d1edb333df00912259e7709102a3041fdbf1bbc21c6d3331"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
