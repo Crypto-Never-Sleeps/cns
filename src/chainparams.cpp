@@ -478,7 +478,7 @@ public:
                 genesis.nNonce = ArithToUint256(0);
                 while (UintToArith256(genesis.GetHash(consensus)) > hashTarget) {
                     genesis.nNonce = ArithToUint256(UintToArith256(genesis.nNonce) + 1);
-                    if (genesis.nNonce == ArithToUint256(arith_uint256(0))) {
+                    if (genesis.nNonce == 0) {
                         LogPrintf("NONCE WRAPPED, incrementing time");
                         std::cout << std::string("NONCE WRAPPED, incrementing time:\n");
                         ++genesis.nTime;
@@ -495,10 +495,10 @@ public:
             }
             std::cout << std::string("Finished calculating Mainnet Genesis Block:\n");
         } else {
-            genesis = CreateGenesisBlock(1640529614, 3905, 0x20001fff, 1, 50 * COIN);
+            genesis = CreateGenesisBlock(1640529614, 3905, 0x20001fff, 1, 5000 * COIN);
             consensus.hashGenesisBlock = genesis.GetHash();
             assert(consensus.hashGenesisBlock == uint256S("0x00153528fa2c14fae39379d9d522726b29cb5c31608c170d13344a9986b9d51f"));
-            assert(genesis.hashMerkleRoot == uint256S("07887fde97c010c16ca9947d9d7c7cf291fc88e33b62b0347da50128e642930d5"));
+            assert(genesis.hashMerkleRoot == uint256S("0x7887fde97c010c16ca9947d9d7c7cf291fc88e33b62b0347da50128e642930d5"));
         }
 
         vSeeds.emplace_back("seed00.cns.com", true);
