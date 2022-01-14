@@ -466,11 +466,43 @@ public:
         nDefaultPort = 10226;
         nPruneAfterHeight = 100000;
 
+        static bool regenerate = true;
+        if (regenerate == true) {
+            consensus.hashGenesisBlock = uint256S("");
+            genesis.nNonce = 0;
+            arith_uint256 hashTarget = arith_uint256().SetCompact(genesis.nBits);
+            if (true && (genesis.GetHash() != consensus.hashGenesisBlock)) {
+                while (UintToArith256(genesis.GetHash()) > hashTarget) {
+                    ++genesis.nNonce;
+                    if (genesis.nNonce == 0) {
+                        ++genesis.nTime;
+                    }
+                    //printf("\rnonce %08x", genesis.nNonce);
+                    //printf("\rtime: %u", genesis.nTime);
+                    printf("\rhash: 0x%s", genesis.GetHash().ToString().c_str());
+                    //printf("\rmerklehash: 0x%s", genesis.hashMerkleRoot.ToString().c_str());
+                }
+                LogPrintf("Mainnet:\n");
+                LogPrintf("-nonce: %u\n", genesis.nNonce);
+                LogPrintf("-time: %u\n", genesis.nTime);
+                LogPrintf("-hash: 0x%s\n", genesis.GetHash().ToString().c_str());
+                LogPrintf("-merklehash: 0x%s\n", genesis.hashMerkleRoot.ToString().c_str());
+            }
+        } else {
+            assert(consensus.hashGenesisBlock == uint256S("0x001"));
+            assert(genesis.hashMerkleRoot == uint256S("0x001"));
+            LogPrintf("Mainnet:\n");
+            LogPrintf("-nonce: %u\n", genesis.nNonce);
+            LogPrintf("-time: %u\n", genesis.nTime);
+            LogPrintf("-hash: 0x%s\n", genesis.GetHash().ToString().c_str());
+            LogPrintf("-merklehash: 0x%s\n", genesis.hashMerkleRoot.ToString().c_str());
+        }
+
         //FindMainNetGenesisBlock(1640529614, 0x20001fff, "main");
-        genesis = CreateGenesisBlock(1640529614, 293, 0x20001fff, 1, 5000 * COIN);
-        consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000b1ade162e3df9c014922793b6f1bf3cea1c8546b37af8f4d6305f06a14063"));
-        assert(genesis.hashMerkleRoot == uint256S("0xbb1ed8a9353e5e8e6035d47c7fed50019955863b9019284d4c0aa1722e82bf8d"));
+        //genesis = CreateGenesisBlock(1640529614, 3905, 0x20001fff, 1, 50 * COIN);
+        //consensus.hashGenesisBlock = genesis.GetHash();
+        //assert(consensus.hashGenesisBlock == uint256S("0x00153528fa2c14fae39379d9d522726b29cb5c31608c170d13344a9986b9d51f"));
+        //assert(genesis.hashMerkleRoot == uint256S("07887fde97c010c16ca9947d9d7c7cf291fc88e33b62b0347da50128e642930d5"));
 
         vSeeds.emplace_back("seed00.cns.com", true);
         vSeeds.emplace_back("seed01.cns.com", true);
